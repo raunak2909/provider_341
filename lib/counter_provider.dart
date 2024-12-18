@@ -4,6 +4,7 @@ class CounterProvider extends ChangeNotifier{
 
   ///data
   int _count = 0;
+  List<Map<String, dynamic>> mData = [];
 
   ///listen observe watch
   int getValue() => _count;
@@ -13,6 +14,15 @@ class CounterProvider extends ChangeNotifier{
     /// data changed
     _count++;
     notifyListeners();
+  }
+
+  void decrementCount(){
+    if(_count>0){
+      _count--;
+      notifyListeners();
+    }
+
+
   }
 
 

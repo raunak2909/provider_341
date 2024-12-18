@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("built again");
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -84,10 +85,15 @@ class MyHomePage extends StatelessWidget {
             ),
 
             /// listen/ observe/ watch
-            Text(
-              '${Provider.of<CounterProvider>(context).getValue()}',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+           Consumer<CounterProvider>(builder: (ctx, provider, _){
+             print("consumer built again");
+             return Text(
+               "${provider.getValue()}",
+                 //'${ctx.watch<CounterProvider>().getValue()}',
+                 //'${Provider.of<CounterProvider>(context).getValue()}',
+                 style: Theme.of(context).textTheme.headlineMedium,
+               );
+           })
           ],
         ),
       ),
@@ -116,11 +122,24 @@ class SecondPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Add'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<CounterProvider>(context, listen: false).incrementCount();
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              context.read<CounterProvider>().decrementCount();
+              //Provider.of<CounterProvider>(context, listen: false).incrementCount();
+            },
+            child: Icon(Icons.remove),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              context.read<CounterProvider>().incrementCount();
+              //Provider.of<CounterProvider>(context, listen: false).incrementCount();
+            },
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
