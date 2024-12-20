@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_341/counter_provider.dart';
+import 'package:provider_341/list_page.dart';
+import 'package:provider_341/list_provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => CounterProvider(),),
+    ChangeNotifierProvider(create: (context) => ListProvider(),),
+  ], child: MyApp(),));
+
+  /*runApp(ChangeNotifierProvider(
     create: (context) => CounterProvider(),
-    child: MyApp(),
-  ));
+    child: ChangeNotifierProvider(
+      create: (context) => ListProvider(),
+      child: MyApp(),
+    ),
+  ));*/
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +47,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  MyHomePage(),
+      home: ListPage(),
     );
   }
 }
@@ -85,15 +96,15 @@ class MyHomePage extends StatelessWidget {
             ),
 
             /// listen/ observe/ watch
-           Consumer<CounterProvider>(builder: (ctx, provider, _){
-             print("consumer built again");
-             return Text(
-               "${provider.getValue()}",
-                 //'${ctx.watch<CounterProvider>().getValue()}',
-                 //'${Provider.of<CounterProvider>(context).getValue()}',
-                 style: Theme.of(context).textTheme.headlineMedium,
-               );
-           })
+            Consumer<CounterProvider>(builder: (ctx, provider, _) {
+              print("consumer built again");
+              return Text(
+                "${provider.getValue()}",
+                //'${ctx.watch<CounterProvider>().getValue()}',
+                //'${Provider.of<CounterProvider>(context).getValue()}',
+                style: Theme.of(context).textTheme.headlineMedium,
+              );
+            })
           ],
         ),
       ),
